@@ -19,6 +19,4 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
       - name: Ma'lumotlar bazasi testlari (PostgreSQL 16)
-        run: |
-          docker compose up -d --wait db
-          bash scripts/db.sh test
+        run: npm run db:test

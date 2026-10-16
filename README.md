@@ -5,27 +5,32 @@ raqamlashtiriladi; o'quvchilar test ishlab ball to'playdi, reyting va marralar b
 
 Ilova pul to'lamaydi. Valyuta ("Alfa") faqat rag'bat va hisob daftari uchun.
 
-Server **o'z kompyuteringizda** (local) ishlaydi. Ma'lumotlar bazasi PostgreSQL 16, ilova Next.js.
+Hamma narsa **o'z kompyuteringizda** (local) ishlaydi: PostgreSQL, Supabase Auth (GoTrue), PostgREST va
+Next.js ilovasi. Bulutga hech narsa yuborilmaydi.
 
 ## Talablar
 
 - Node.js 22+
-- Docker (PostgreSQL uchun) yoki o'rnatilgan PostgreSQL 16 va `psql`
+- Docker va Docker Compose
+- Bo'sh port: 3000 (ilova), 5432 (baza), 8000 (API shlyuzi)
 
-## Ishga tushirish
+## Birinchi ishga tushirish
 
 ```bash
-cp .env.example .env.local
 npm install
-npm run db:up      # PostgreSQL konteynerini ishga tushiradi (Docker kerak)
-npm run db:reset   # dev bazani yaratadi va migratsiyani qo'llaydi
-npm run dev        # http://localhost:3000
+npm run env:init     # .env yaratadi: parol, JWT kalit, anon/service_role kalitlari (bir marta)
+npm run stack:up     # docker: db, auth, rest, api
+npm run db:migrate   # migratsiyani dev bazaga qo'llaydi
+npm run dev          # http://localhost:3000
 ```
+
+`.env` faylni hech qachon repoga qo'shmang. Undagi kalitlarni yo'qotsangiz, `npm run env:init` yangisini
+yaratadi, lekin eski sessiyalar va foydalanuvchilar ishlamay qoladi.
 
 ## Testlar
 
 ```bash
-npm run db:test    # migratsiya + 118 ta ma'lumotlar bazasi tekshiruvi (RLS, RPC, ball, marra)
+npm run db:test      # toza PostgreSQL 16 da: stub + migratsiya + 118 ta tekshiruv (RLS, RPC, ball, marra)
 npm run lint
 npm run typecheck
 npm run build
@@ -36,19 +41,23 @@ npm run build
 ## Tuzilma
 
 ```
-app/                 Next.js (App Router) sahifalari
-supabase/migrations/ Ma'lumotlar bazasi sxemasi (001 — mavjud, o'zgartirilmaydi)
-supabase/tests/      Auth "stub" (Supabase o'rnida) va test to'plami
-scripts/db.sh        up / reset / test buyruqlari
-docker-compose.yml   Mahalliy PostgreSQL 16
+app/                     Next.js (App Router) sahifalari
+lib/env.ts               Muhit o'zgaruvchilarini tekshirish (faqat server)
+lib/supabase/            server (foydalanuvchi sessiyasi) va admin (service_role) klientlari
+supabase/migrations/     Ma'lumotlar bazasi sxemasi (001 — mavjud, o'zgartirilmaydi)
+supabase/tests/          Auth "stub" (faqat test uchun) va test to'plami
+supabase/stack/          Stek uchun rollar, JWT sozlamalari va nginx shlyuzi
+scripts/                 env, stek, migratsiya va testlar
+docker-compose.yml       db, auth, rest, api (+ test uchun db-test)
 ```
 
 Biznes-qoidalar bazada (SECURITY DEFINER RPC va RLS). Frontend qoidalarni takrorlamaydi, faqat RPC'larni
 chaqiradi. Bazani o'zgartirish kerak bo'lsa, yangi migratsiya (`002_...`) yoziladi.
+
+`supabase/stack/db/` dagi fayllar Supabase loyihasidan olingan (Apache License 2.0).
 
 ## Eslatmalar
 
 - Telegram bildirishnomalari keyingi bosqichda qo'shiladi (`002` migratsiya kerak bo'ladi).
 - Bolalar shaxsiy ma'lumoti: ota-ona roziligi va saqlash muddatlari maktab ma'muriyati bilan yuridik
   tekshirilishi kerak. Bu loyiha kodi buni hal qilmaydi.
-- `.env*` fayllari repoga qo'shilmaydi. Parollar va kalitlar faqat mahalliy `.env.local` da bo'ladi.

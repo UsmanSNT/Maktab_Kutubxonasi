@@ -8,15 +8,20 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "db:up": "bash scripts/db.sh up",
-    "db:reset": "bash scripts/db.sh reset",
+    "env:init": "node scripts/gen-env.mjs",
+    "stack:up": "bash scripts/db.sh stack:up",
+    "db:migrate": "bash scripts/db.sh migrate",
     "db:test": "bash scripts/db.sh test",
     "test": "bash scripts/db.sh test"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.118.0",
     "next": "16.4.2",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
