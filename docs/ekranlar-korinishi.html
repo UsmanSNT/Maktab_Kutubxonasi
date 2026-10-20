@@ -1,0 +1,411 @@
+<title>Maktab kutubxonasi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: ekran tanlagich + ilovaning haqiqiy maketi (yon panel / telefon). Tokenlar ilovaning globals.css dan. */
+:root {
+  --paper: #f8f5ee; --paper2: #f0eadc; --card: #ffffff; --ink: #1b1f2b; --muted: #5d6272; --line: #e5dece;
+  --brand: #1e3a8a; --brand9: #122354; --brand6: #2747a6; --brand50: #eef2fb; --brand100: #dce4f6; --brand200: #b9c8ec;
+  --gold: #d4a017; --gold4: #e2b53a; --gold50: #fdf7e4; --gold7: #8a6508;
+  --ok: #16803c; --ok50: #ecfdf3; --bad: #c02626; --bad50: #fef2f2; --warn: #c2580c; --warn50: #fff7ed;
+  --shadow: 0 1px 2px rgb(27 31 43 / .04), 0 4px 16px -4px rgb(27 31 43 / .08);
+  --pop: 0 12px 32px -8px rgb(18 35 84 / .25);
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #11141d; --paper2: #1c2130; --card: #181c28; --ink: #eceef4; --muted: #9aa0b2; --line: #2a3043;
+  --brand50: #1c2645; --brand100: #24315a; --gold50: #2e2511; --gold7: #e8c35c; --ok50: #10291b; --bad50: #331516; --warn50: #33200f;
+  --ok: #3fbf6f; --bad: #f06a6a; --warn: #f59a4a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #11141d; --paper2: #1c2130; --card: #181c28; --ink: #eceef4; --muted: #9aa0b2; --line: #2a3043;
+  --brand50: #1c2645; --brand100: #24315a; --gold50: #2e2511; --gold7: #e8c35c; --ok50: #10291b; --bad50: #331516; --warn50: #33200f;
+  --ok: #3fbf6f; --bad: #f06a6a; --warn: #f59a4a; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px }
+h1, h2, h3 { text-wrap: balance; margin: 0 }
+p { margin: 0 }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 18px }
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px }
+.top h1 { font-size: 20px; font-weight: 800 }
+.note { font-size: 13px; color: var(--muted) }
+.tabs { display: flex; gap: 4px; overflow-x: auto; background: var(--paper2); padding: 4px; border-radius: 12px }
+.tabs button { flex: 0 0 auto; border: 0; background: transparent; color: var(--muted); font: 600 14px var(--sans); padding: 9px 14px; border-radius: 9px; cursor: pointer }
+.tabs button[aria-selected="true"] { background: var(--card); color: var(--ink); box-shadow: var(--shadow) }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--brand6); outline-offset: 2px }
+
+/* Umumiy elementlar */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); min-width: 0 }
+.ch { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line) }
+.ch h3 { font-size: 15px; font-weight: 600 }
+.ico { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; flex: none; background: var(--brand50); color: var(--brand6) }
+.ico svg { width: 18px; height: 18px }
+.ico.gold { background: var(--gold50); color: var(--gold7) } .ico.ok { background: var(--ok50); color: var(--ok) } .ico.bad { background: var(--bad50); color: var(--bad) }
+.badge { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; border-radius: 99px; padding: 2px 10px; font-size: 12px; font-weight: 700 }
+.b-brand { background: var(--brand50); color: var(--brand6) } .b-ok { background: var(--ok50); color: var(--ok) } .b-bad { background: var(--bad50); color: var(--bad) }
+.b-warn { background: var(--warn50); color: var(--warn) } .b-gold { background: var(--gold50); color: var(--gold7) }
+:root[data-theme="dark"] .b-brand, :root[data-theme="dark"] .ico:not(.gold):not(.ok):not(.bad) { color: var(--brand200) }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .b-brand, :root:not([data-theme="light"]) .ico:not(.gold):not(.ok):not(.bad) { color: var(--brand200) } }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid transparent; font: 600 15px var(--sans); cursor: pointer }
+.btn svg { width: 16px; height: 16px }
+.p { background: var(--brand); color: #fff } .s { background: var(--card); color: var(--ink); border-color: var(--line) } .g { background: var(--gold); color: var(--brand9) } .okb { background: var(--ok); color: #fff }
+.list { list-style: none; margin: 0; padding: 0 }
+.list li { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-top: 1px solid var(--line) }
+.list li:first-child { border-top: 0 }
+.av { width: 36px; height: 36px; border-radius: 99px; display: grid; place-items: center; flex: none; background: var(--brand100); color: var(--brand); font-size: 12px; font-weight: 800 }
+:root[data-theme="dark"] .av { color: var(--brand200) }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .av { color: var(--brand200) } }
+.grow { flex: 1; min-width: 0 } .t1 { font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap } .t2 { font-size: 12px; color: var(--muted) }
+.num { font-variant-numeric: tabular-nums }
+.field { display: grid; gap: 6px } .field span { font-size: 14px; font-weight: 600 }
+.inp { height: 44px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--ink); padding: 0 14px; font: 15px var(--sans); width: 100% }
+
+/* Kutubxonachi maketi */
+.staff { display: grid; grid-template-columns: 240px 1fr; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); min-height: 640px; background: var(--paper) }
+.side { background: var(--brand9); color: #fff; padding: 16px; display: flex; flex-direction: column; gap: 22px }
+.brand { display: flex; align-items: center; gap: 10px }
+.logo { width: 38px; height: 38px; border-radius: 11px; background: var(--gold); color: var(--brand9); display: grid; place-items: center; flex: none }
+.logo svg { width: 20px; height: 20px }
+.brand b { display: block; font-size: 15px } .brand small { display: block; font-size: 11px; color: var(--brand200) }
+.nav { display: grid; gap: 2px }
+.nav a { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 11px; color: rgb(220 228 246 / .85); font-size: 14px; font-weight: 500; text-decoration: none; cursor: pointer }
+.nav a svg { width: 17px; height: 17px; color: var(--brand200) }
+.nav a.on { background: rgb(255 255 255 / .12); color: #fff } .nav a.on svg { color: var(--gold4) }
+.me { margin-top: auto; background: rgb(255 255 255 / .06); border-radius: 14px; padding: 10px; display: flex; gap: 10px; align-items: center }
+.me .av { background: var(--gold); color: var(--brand9) }
+.main { padding: 26px; display: grid; gap: 18px; align-content: start; min-width: 0 }
+.ph h2 { font-size: 24px; font-weight: 800; letter-spacing: -.01em }
+.ph { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px }
+.stat { display: flex; gap: 12px; padding: 16px; align-items: flex-start }
+.stat .lab { font-size: 13px; color: var(--muted); font-weight: 500 } .stat .val { font-size: 24px; font-weight: 800 } .stat .hint { font-size: 11px; color: var(--muted) }
+.two { display: grid; grid-template-columns: 1.5fr 1fr; gap: 18px; align-items: start }
+.col { display: grid; gap: 18px }
+.place { width: 30px; height: 30px; border-radius: 99px; display: grid; place-items: center; font-weight: 800; font-size: 13px; background: var(--paper2); color: var(--muted); flex: none }
+.place.first { background: var(--gold); color: var(--brand9) }
+
+/* Berish */
+.issue { display: grid; grid-template-columns: 1fr 1.1fr; gap: 18px; align-items: start }
+.scan { margin: 16px; border: 2px dashed var(--brand200); background: var(--brand50); border-radius: 16px; padding: 34px 16px; display: grid; justify-items: center; gap: 10px; text-align: center; color: var(--brand6) }
+.scan .big { width: 64px; height: 64px; border-radius: 16px; background: var(--brand); color: #fff; display: grid; place-items: center; box-shadow: var(--pop) }
+.scan .big svg { width: 32px; height: 32px }
+.step { padding: 16px; display: grid; gap: 10px } .step.on { outline: 2px solid rgb(53 87 183 / .4); outline-offset: -2px }
+.sn { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted) }
+.sn i { font-style: normal; width: 22px; height: 22px; border-radius: 99px; display: grid; place-items: center; font-size: 11px; background: var(--paper2) }
+.step.on .sn i { background: var(--brand); color: #fff }
+
+/* O'quvchi (telefon) */
+.phones { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; justify-items: center }
+.phone { width: 100%; max-width: 360px; border-radius: 34px; border: 10px solid #1b1f2b; background: var(--paper); overflow: hidden; position: relative; box-shadow: var(--pop) }
+.screen { height: 660px; overflow-y: auto; padding: 14px 14px 90px; display: grid; gap: 14px; align-content: start }
+.hdr { display: flex; align-items: center; justify-content: space-between }
+.hero { background: var(--brand9); color: #fff; border-radius: 22px; padding: 18px; display: grid; gap: 14px; position: relative; overflow: hidden }
+.hero::after { content: ""; position: absolute; right: -50px; top: -60px; width: 180px; height: 180px; border-radius: 99px; background: rgb(39 71 166 / .7); filter: blur(30px) }
+.hero > * { position: relative }
+.pill { border-radius: 16px; padding: 10px 14px; flex: 1 }
+.bar { height: 9px; border-radius: 99px; background: rgb(255 255 255 / .15); overflow: hidden } .bar > div { height: 100%; background: var(--gold4); border-radius: 99px }
+.pbar { height: 8px; border-radius: 99px; background: var(--paper2); overflow: hidden } .pbar > div { height: 100%; background: var(--brand6); border-radius: 99px }
+.quizcta { display: flex; gap: 12px; align-items: center; background: var(--gold50); border: 1px solid rgb(226 181 58 / .6); border-radius: 16px; padding: 12px }
+.tabbar { position: absolute; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 0 10px }
+.tabbar span { display: grid; justify-items: center; gap: 3px; font-size: 10px; font-weight: 600; color: var(--muted) }
+.tabbar span svg { width: 21px; height: 21px } .tabbar span.on { color: var(--brand6) }
+.tabbar .fab { width: 50px; height: 50px; border-radius: 16px; background: var(--brand); color: #fff; display: grid; place-items: center; margin-top: -26px; box-shadow: var(--pop); border: 4px solid var(--paper) }
+.opt { display: flex; align-items: center; gap: 12px; padding: 13px; border: 2px solid var(--line); border-radius: 16px; background: var(--card); cursor: pointer; text-align: left; font: 500 15px var(--sans); color: var(--ink); width: 100% }
+.opt b { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: var(--paper2); color: var(--muted); flex: none }
+.opt.pick { border-color: var(--brand6); background: var(--brand50) } .opt.pick b { background: var(--brand); color: #fff }
+.dots { display: flex; gap: 4px } .dots i { height: 6px; width: 18px; border-radius: 99px; background: var(--paper2) } .dots i.d { background: var(--brand6) } .dots i.c { background: var(--gold) }
+
+/* Kirish */
+.auth { display: grid; grid-template-columns: 1.05fr 1fr; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); min-height: 560px }
+.auth .l { background: var(--brand9); color: #fff; padding: 36px; display: flex; flex-direction: column; justify-content: space-between; gap: 30px }
+.auth .l h2 { font-size: 34px; line-height: 1.15; font-weight: 800 } .auth .l h2 em { font-style: normal; color: var(--gold4) }
+.auth .r { background: var(--paper); padding: 36px; display: grid; align-content: center; justify-items: center }
+.auth form { width: 100%; max-width: 340px; display: grid; gap: 16px }
+.feat { display: grid; gap: 12px; color: var(--brand100); font-size: 14px } .feat div { display: flex; gap: 10px; align-items: center }
+.feat .ic { width: 32px; height: 32px; border-radius: 9px; background: rgb(255 255 255 / .1); color: var(--gold4); display: grid; place-items: center; flex: none }
+.feat .ic svg, .ico svg { width: 17px; height: 17px }
+
+@media (max-width: 900px) {
+  .staff { grid-template-columns: 1fr } .side { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 12px } .nav { display: none } .me { margin: 0 0 0 auto }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)) } .two, .issue, .auth { grid-template-columns: 1fr } .main { padding: 18px }
+  .auth .l { padding: 24px } .auth .r { padding: 24px }
+}
+@media (max-width: 460px) { .stats { grid-template-columns: 1fr } .phone { border-width: 6px } }
+@media (prefers-reduced-motion: no-preference) { .view { animation: fade .25s ease } @keyframes fade { from { opacity: .6 } to { opacity: 1 } } }
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Maktab kutubxonasi — ekranlar ko'rinishi</h1>
+      <p class="note">Ilovaning asosiy ekranlari, namunaviy ma'lumotlar bilan. Haqiqiy ma'lumotlar baza ulangandan keyin chiqadi.</p>
+    </div>
+  </div>
+  <div class="tabs" role="tablist">
+    <button role="tab" data-v="panel" aria-selected="true">Kutubxonachi paneli</button>
+    <button role="tab" data-v="berish" aria-selected="false">Kitob berish</button>
+    <button role="tab" data-v="oquvchi" aria-selected="false">O'quvchi (telefon)</button>
+    <button role="tab" data-v="kirish" aria-selected="false">Kirish</button>
+  </div>
+
+  <!-- 1. Kutubxonachi paneli -->
+  <section class="view" id="v-panel">
+    <div class="staff">
+      <aside class="side">
+        <div class="brand"><span class="logo" data-i="lib"></span><div><b>Kutubxona</b><small>1-son umumiy o'rta ta'lim maktabi</small></div></div>
+        <nav class="nav">
+          <a class="on" data-go="panel"><i data-i="grid"></i>Bosh panel</a>
+          <a data-go="berish"><i data-i="up"></i>Kitob berish</a>
+          <a><i data-i="down"></i>Qabul qilish</a>
+          <a><i data-i="inbox"></i>So'rovlar</a>
+          <a><i data-i="cal"></i>Qarzlar</a>
+          <a><i data-i="lib"></i>Kitoblar</a>
+          <a><i data-i="users"></i>O'quvchilar</a>
+          <a><i data-i="trophy"></i>Reyting</a>
+          <a><i data-i="gear"></i>Sozlamalar</a>
+        </nav>
+        <div class="me"><span class="av">DK</span><div class="grow"><p class="t1" style="color:#fff">Dilnoza Karimova</p><p class="t2" style="color:var(--brand200)">Administrator</p></div></div>
+      </aside>
+      <div class="main">
+        <div class="ph">
+          <div><p class="t2">20-okt, 2026</p><h2>Xayrli kun, Dilnoza!</h2><p class="note">Kutubxonaning bugungi holati.</p></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn p" data-go="berish"><i data-i="up"></i>Kitob berish</button><button class="btn s"><i data-i="down"></i>Qabul qilish</button></div>
+        </div>
+        <div class="stats">
+          <div class="card stat"><span class="ico" data-i="book"></span><div><p class="lab">O'quvchilarda</p><p class="val num">4</p><p class="hint">faol qarzlar</p></div></div>
+          <div class="card stat"><span class="ico bad" data-i="alert"></span><div><p class="lab">Muddati o'tgan</p><p class="val num">1</p><p class="hint">qaytarilmagan kitoblar</p></div></div>
+          <div class="card stat"><span class="ico gold" data-i="inbox"></span><div><p class="lab">So'rovlar</p><p class="val num">1</p><p class="hint">1 so'rov · 0 tasdiq</p></div></div>
+          <div class="card stat"><span class="ico" data-i="users"></span><div><p class="lab">O'quvchilar</p><p class="val num">12</p><p class="hint">26 ta kitob nusxasi</p></div></div>
+        </div>
+        <div class="two">
+          <div class="card">
+            <div class="ch"><span class="ico" data-i="cal"></span><h3 class="grow">So'nggi harakatlar</h3><span class="t2" style="color:var(--brand6);font-weight:600">Hammasi</span></div>
+            <ul class="list" id="recent"></ul>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="ch"><span class="ico" data-i="medal"></span><h3>Oyning eng faol kitobxonlari</h3></div>
+              <ol class="list" id="leaders"></ol>
+            </div>
+            <div class="card">
+              <div class="ch"><span class="ico bad" data-i="alert"></span><h3>Muddati o'tganlar</h3></div>
+              <ul class="list"><li><div class="grow"><p class="t1">Hasanova Nilufar</p><p class="t2">Kecha va kunduz</p></div><span class="badge b-bad">6 kun</span></li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Kitob berish -->
+  <section class="view" id="v-berish" hidden>
+    <div class="staff">
+      <aside class="side">
+        <div class="brand"><span class="logo" data-i="lib"></span><div><b>Kutubxona</b><small>1-son umumiy o'rta ta'lim maktabi</small></div></div>
+        <nav class="nav">
+          <a data-go="panel"><i data-i="grid"></i>Bosh panel</a>
+          <a class="on"><i data-i="up"></i>Kitob berish</a>
+          <a><i data-i="down"></i>Qabul qilish</a>
+          <a><i data-i="inbox"></i>So'rovlar</a>
+          <a><i data-i="cal"></i>Qarzlar</a>
+          <a><i data-i="lib"></i>Kitoblar</a>
+          <a><i data-i="users"></i>O'quvchilar</a>
+          <a><i data-i="trophy"></i>Reyting</a>
+          <a><i data-i="gear"></i>Sozlamalar</a>
+        </nav>
+        <div class="me"><span class="av">DK</span><div class="grow"><p class="t1" style="color:#fff">Dilnoza Karimova</p><p class="t2" style="color:var(--brand200)">Administrator</p></div></div>
+      </aside>
+      <div class="main">
+        <div class="ph"><div><h2>Kitob berish</h2><p class="note">O'quvchi kartasi va kitob yorlig'ini skaner qiling, so'ng tasdiqlang.</p></div></div>
+        <div class="issue">
+          <div class="card">
+            <div class="scan"><span class="big" data-i="scan"></span><b>Kitob yorlig'ini skaner qiling</b><span class="t2">Kamerani yoqish</span></div>
+            <div style="display:flex;gap:8px;padding:0 16px 16px"><input class="inp" id="code" placeholder="Kodni kiriting yoki skaner qiling" style="font-family:ui-monospace,monospace"><button class="btn p">OK</button></div>
+            <p class="t2" style="padding:0 16px 16px">USB skaner ham ishlaydi: kodni yozadi va Enter bosadi.</p>
+          </div>
+          <div class="col">
+            <div class="card step">
+              <div class="sn"><i>1</i>O'quvchi</div>
+              <div style="display:flex;gap:12px;align-items:flex-start">
+                <span class="av" style="width:44px;height:44px">AT</span>
+                <div class="grow"><p class="t1">Toshmatov Aziz</p><p class="t2">7-A sinf</p>
+                  <p class="t2" style="margin-top:8px;background:var(--paper);padding:8px 10px;border-radius:10px">Qo'lidagi kitoblar: yo'q</p></div>
+                <span class="t2" style="color:var(--brand6);font-weight:600">O'zgartirish</span>
+              </div>
+            </div>
+            <div class="card step on">
+              <div class="sn"><i>2</i>Kitob</div>
+              <div style="display:flex;gap:12px;align-items:flex-start">
+                <span class="ico gold" data-i="book" style="width:44px;height:44px"></span>
+                <div class="grow"><p class="t1">Yulduzli tunlar</p><p class="t2">Nusxa №1</p><span class="badge b-ok" style="margin-top:6px">Bo'sh</span></div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px"><button class="btn p" style="flex:1;height:50px" id="issueBtn">Kitobni berish</button><button class="btn s" style="height:50px" aria-label="Boshidan" data-i="reset"></button></div>
+            <div class="card" id="issued" hidden style="background:var(--ok50);border-color:transparent;padding:16px;display:flex;gap:12px">
+              <span class="ico ok" data-i="check"></span><div><p class="t1" style="color:var(--ok)">Kitob berildi</p><p class="t2" style="color:var(--ink)"><b>Yulduzli tunlar</b> — Aziz Toshmatov. Qaytarish muddati: <b>3-noy, 2026</b></p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. O'quvchi -->
+  <section class="view" id="v-oquvchi" hidden>
+    <div class="phones">
+      <div class="phone">
+        <div class="screen">
+          <div class="hdr"><div class="brand"><span class="logo" data-i="lib" style="background:var(--brand);color:var(--gold4);width:34px;height:34px"></span><div><b style="color:var(--ink)">Kutubxona</b><small style="color:var(--muted)">1-son maktab</small></div></div><span class="ico" data-i="card"></span></div>
+          <div class="hero">
+            <div><p style="color:var(--brand200)">Salom,</p><h2 style="font-size:26px">Aziz!</h2><p style="color:var(--brand100);font-size:13px;margin-top:4px">Siz 3 ta kitob o'qidingiz. Davom eting!</p></div>
+            <div style="display:flex;gap:10px">
+              <div class="pill" style="background:rgb(255 255 255 / .1)"><p style="font-size:11px;font-weight:700;color:var(--brand200)">BALL</p><p class="num" style="font-size:26px;font-weight:800">70</p></div>
+              <div class="pill" style="background:var(--gold);color:var(--brand9)"><p style="font-size:11px;font-weight:700">ALFA</p><p class="num" style="font-size:26px;font-weight:800">0</p></div>
+            </div>
+            <div style="background:rgb(255 255 255 / .08);border-radius:14px;padding:12px;display:grid;gap:8px">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><b>Keyingi marra: 5 kitob</b><span style="color:var(--brand200)">+50 Alfa</span></div>
+              <div class="bar"><div style="width:20%"></div></div>
+              <p style="font-size:11px;color:var(--brand200)">Yana 4 ta kitob o'qib, testdan o'rtacha 80% va undan yuqori natija oling. Hozirgi o'rtacha: 100%</p>
+            </div>
+          </div>
+          <div class="quizcta"><span class="ico gold" data-i="flame" style="background:var(--gold);color:var(--brand9)"></span><div class="grow"><p class="t1">«O'tkan kunlar» bo'yicha test</p><p class="t2" style="color:var(--gold7)">Boshlash muddati: bugun 15:40</p></div></div>
+          <div class="card">
+            <div class="ch"><span class="ico" data-i="book"></span><h3>Qo'limdagi kitoblar</h3></div>
+            <ul class="list">
+              <li style="display:grid;gap:8px"><div style="display:flex;justify-content:space-between;gap:8px"><div><p class="t1">Yulduzli tunlar</p><p class="t2">Pirimqul Qodirov</p></div><span class="badge b-brand">14 kun qoldi</span></div><div class="pbar"><div style="width:6%"></div></div></li>
+            </ul>
+          </div>
+        </div>
+        <div class="tabbar"><span class="on"><i data-i="home"></i>Bosh</span><span><i data-i="lib"></i>Katalog</span><span><span class="fab" data-i="scan"></span>Skaner</span><span><i data-i="list"></i>Testlar</span><span><i data-i="trophy"></i>Reyting</span></div>
+      </div>
+
+      <div class="phone">
+        <div class="screen" style="padding-bottom:20px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="dots" id="dots"></div><span class="badge b-brand num" style="font-size:13px;padding:5px 11px" id="timer">42s</span></div>
+          <div class="card" style="overflow:hidden">
+            <div style="height:4px;background:var(--paper2)"><div id="tbar" style="height:100%;width:70%;background:var(--brand6);transition:width 1s linear"></div></div>
+            <div style="padding:18px;display:grid;gap:14px">
+              <p class="t2" style="font-weight:600" id="qpos">Savol 3 / 10</p>
+              <h2 style="font-size:20px;line-height:1.3" id="qbody">Kumush qaysi shahardan edi?</h2>
+              <div style="display:grid;gap:10px" id="opts"></div>
+            </div>
+          </div>
+          <p class="t2" style="text-align:center">Javob darhol saqlanadi · Oynadan chiqmang</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Kirish -->
+  <section class="view" id="v-kirish" hidden>
+    <div class="auth">
+      <div class="l">
+        <div class="brand"><span class="logo" data-i="lib"></span><b>Maktab kutubxonasi</b></div>
+        <div style="display:grid;gap:14px;max-width:420px">
+          <h2>Har bir kitob — <em>yangi marra.</em></h2>
+          <p style="color:var(--brand100)">QR kod bilan kitob oling, o'qing, test ishlang va reytingda yuqorilang.</p>
+          <div class="feat">
+            <div><span class="ic" data-i="scan"></span>Kitob berish va qaytarish — bir skanerda</div>
+            <div><span class="ic" data-i="book"></span>O'qilgan kitob bo'yicha qisqa test</div>
+            <div><span class="ic" data-i="trophy"></span>Ball, marralar va sinflar reytingi</div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--brand200)">Barcha ma'lumotlar maktab kompyuterida saqlanadi.</p>
+      </div>
+      <div class="r">
+        <form id="loginForm">
+          <div><h2 style="font-size:28px;font-weight:800">Xush kelibsiz</h2><p class="note" style="margin-top:6px">Maktab kodi va ID raqamingiz bilan kiring</p></div>
+          <label class="field" for="f-school"><span>Maktab kodi</span><input class="inp" id="f-school" value="demo"></label>
+          <label class="field" for="f-login"><span>ID raqam</span><input class="inp" id="f-login" value="100001"></label>
+          <label class="field" for="f-pass"><span>Parol</span><input class="inp" id="f-pass" type="password" value="oquvchi123"></label>
+          <button class="btn p" style="height:52px">Kirish</button>
+          <p class="note" style="text-align:center">Birinchi marta kiryapsizmi? <b style="color:var(--brand6)">Hisobni faollashtirish</b></p>
+          <p class="t2" id="loginNote" hidden style="text-align:center;color:var(--ok)">Bu ko'rinish — kirish haqiqiy ilovada ishlaydi.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const I = {
+  lib: '<path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/>',
+  grid: '<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',
+  up: '<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="m9 10 3-3 3 3"/><path d="M12 13V7"/>',
+  down: '<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="m9 10 3 3 3-3"/><path d="M12 13V7"/>',
+  inbox: '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+  cal: '<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4M8 2v4M3 10h5"/><circle cx="16" cy="16" r="6"/><path d="M16 14v2l1 1"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+  gear: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  book: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+  alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/>',
+  medal: '<path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><circle cx="12" cy="17" r="5"/>',
+  scan: '<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"/>',
+  reset: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+  check: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+  card: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h4"/>',
+  flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  home: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .71-1.53l7-6a2 2 0 0 1 2.58 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  list: '<path d="m3 17 2 2 4-4M3 7l2 2 4-4M13 6h8M13 12h8M13 18h8"/>',
+};
+document.querySelectorAll("[data-i]").forEach((el) => {
+  el.insertAdjacentHTML("afterbegin", `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[el.dataset.i]}</svg>`);
+  if (el.tagName === "I") el.style.display = "contents";
+});
+
+const recent = [
+  ["AT", "Yulduzli tunlar", "Toshmatov Aziz · 20-okt, 10:42", "brand", "Berildi"],
+  ["MY", "O'tkan kunlar", "Yusupova Madina · 20-okt, 09:15", "brand", "Berildi"],
+  ["DX", "Shum bola", "Xolmatov Doniyor · 19-okt, 14:03", "brand", "Berildi"],
+  ["GR", "Kichkina shahzoda", "Rashidova Gulnoza · 18-okt, 11:20", "ok", "Qaytarildi"],
+  ["OT", "O'tkan kunlar", "Nurmatov Otabek · 17-okt, 12:48", "ok", "Qaytarildi"],
+];
+document.getElementById("recent").innerHTML = recent.map(([a, t, s, tone, l]) =>
+  `<li><span class="av">${a}</span><div class="grow"><p class="t1">${t}</p><p class="t2">${s}</p></div><span class="badge b-${tone}">${l}</span></li>`).join("");
+const leaders = [["Aziz T.", "7-A", 3, 70], ["Madina Y.", "7-A", 2, 47], ["Otabek N.", "6-B", 1, 34], ["Jasur E.", "7-A", 1, 31], ["Zarina M.", "5-A", 2, 20]];
+document.getElementById("leaders").innerHTML = leaders.map(([n, c, b, p], i) =>
+  `<li><span class="place ${i === 0 ? "first" : ""}">${i + 1}</span><div class="grow"><p class="t1">${n}</p><p class="t2">${c} · ${b} kitob</p></div><b class="num" style="color:var(--brand6)">${p}</b></li>`).join("");
+
+// Test: namunaviy savollar, javob tanlansa keyingisiga o'tadi
+const qs = [
+  ["Kumush qaysi shahardan edi?", ["Marg'ilon", "Toshkent", "Buxoro", "Samarqand"]],
+  ["Otabekning otasi kim?", ["Mirzakarim qutidor", "Yusufbek hoji", "Solih maxdum", "Hasanali"]],
+  ["Otabekning sodiq xizmatkori kim?", ["Homid", "Sodiq", "Hasanali", "Jannat"]],
+];
+let qi = 0, pos = 3, left = 42, timer;
+function renderQ() {
+  const [body, opts] = qs[qi % qs.length];
+  document.getElementById("qbody").textContent = body;
+  document.getElementById("qpos").textContent = `Savol ${pos} / 10`;
+  document.getElementById("dots").innerHTML = Array.from({ length: 10 }, (_, i) => `<i class="${i < pos - 1 ? "d" : i === pos - 1 ? "c" : ""}"></i>`).join("");
+  document.getElementById("opts").innerHTML = opts.map((o, i) => `<button type="button" class="opt" data-o="${i}"><b>${"ABCD"[i]}</b>${o}</button>`).join("");
+}
+function tick() {
+  left = left > 0 ? left - 1 : 60;
+  document.getElementById("timer").textContent = left + "s";
+  document.getElementById("tbar").style.width = (left / 60) * 100 + "%";
+}
+document.getElementById("opts").addEventListener("click", (e) => {
+  const b = e.target.closest(".opt"); if (!b) return;
+  b.classList.add("pick");
+  setTimeout(() => { qi++; pos = pos >= 10 ? 1 : pos + 1; left = 60; renderQ(); }, 450);
+});
+renderQ();
+
+// Ekranlar
+const views = ["panel", "berish", "oquvchi", "kirish"];
+function show(v) {
+  if (!views.includes(v)) v = "panel";
+  views.forEach((x) => { document.getElementById("v-" + x).hidden = x !== v; });
+  document.querySelectorAll(".tabs button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.v === v)));
+  clearInterval(timer);
+  if (v === "oquvchi") timer = setInterval(tick, 1000);
+}
+document.querySelectorAll("[data-v]").forEach((b) => b.addEventListener("click", () => show(b.dataset.v)));
+document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => show(b.dataset.go)));
+document.getElementById("issueBtn").addEventListener("click", () => { document.getElementById("issued").hidden = false; });
+document.getElementById("loginForm").addEventListener("submit", (e) => { e.preventDefault(); document.getElementById("loginNote").hidden = false; });
+show(location.hash.slice(1));
+</script>
