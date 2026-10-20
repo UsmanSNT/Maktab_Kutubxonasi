@@ -43,3 +43,6 @@ next-env.d.ts
 # Mahalliy DB loglari
 .db-logs/
 !.env.example
+
+# Dev server logs
+*.log
