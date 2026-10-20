@@ -2,9 +2,10 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { authEmail } from "@/lib/auth";
 import { getServerClient } from "@/lib/supabase/server";
 
-export type LoginState = { error?: string };
+export type LoginState = { error?: string; school?: string; login?: string };
 
 const schema = z.object({
   school: z.string().trim().min(1, "Maktab kodini kiriting"),
@@ -12,24 +13,25 @@ const schema = z.object({
   password: z.string().min(1, "Parolni kiriting"),
 });
 
-// Bazada foydalanuvchi email'i "<maktab_kodi>.<login_id>@users.maktab.local" ko'rinishida saqlanadi.
 const GENERIC_ERROR = "Maktab kodi, ID yoki parol noto'g'ri";
 
 export async function loginAction(_prev: LoginState, formData: FormData): Promise<LoginState> {
   const parsed = schema.safeParse(Object.fromEntries(formData));
+  const echo = { school: String(formData.get("school") ?? ""), login: String(formData.get("login") ?? "") };
   if (!parsed.success) {
-    return { error: parsed.error.issues[0].message };
+    return { ...echo, error: parsed.error.issues[0].message };
   }
-
-  const school = parsed.data.school.toLowerCase();
-  const login = parsed.data.login.toLowerCase();
-  const email = `${school}.${login}@users.maktab.local`;
 
   const supabase = await getServerClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password: parsed.data.password });
-  if (error) {
-    return { error: GENERIC_ERROR };
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: authEmail(parsed.data.school, parsed.data.login),
+    password: parsed.data.password,
+  });
+  if (error || !data.user) {
+    return { ...echo, error: GENERIC_ERROR };
   }
 
-  redirect("/kutubxonachi");
+  // Xodim (biror roli bor) — kutubxonachi paneliga, qolganlar — o'quvchi sahifasiga.
+  const { data: roles } = await supabase.from("memberships").select("role").eq("profile_id", data.user.id).limit(1);
+  redirect(roles && roles.length > 0 ? "/kutubxonachi" : "/o-quvchi");
 }

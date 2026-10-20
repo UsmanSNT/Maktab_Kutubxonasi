@@ -1,14 +1,65 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
 
-:root {
-  --color-primary: #1e3a8a;
-  --color-accent: #d4a017;
-  --color-paper: #f7f1e3;
-  --color-ink: #27272a;
+/* Dizayn tizimi: siyoh-ko'k (asosiy), oltin (rag'bat), qog'oz (fon). */
+@theme {
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-paper: #f8f5ee;
+  --color-paper-2: #f0eadc;
+  --color-ink: #1b1f2b;
+  --color-muted: #5d6272;
+  --color-line: #e5dece;
+
+  --color-brand-50: #eef2fb;
+  --color-brand-100: #dce4f6;
+  --color-brand-200: #b9c8ec;
+  --color-brand-500: #3557b7;
+  --color-brand-600: #2747a6;
+  --color-brand-700: #1e3a8a;
+  --color-brand-800: #182f70;
+  --color-brand-900: #122354;
+
+  --color-gold-50: #fdf7e4;
+  --color-gold-100: #f9ecc1;
+  --color-gold-400: #e2b53a;
+  --color-gold-500: #d4a017;
+  --color-gold-700: #8a6508;
+
+  --color-ok-50: #ecfdf3;
+  --color-ok-600: #16803c;
+  --color-ok-700: #11652f;
+  --color-bad-50: #fef2f2;
+  --color-bad-600: #c02626;
+  --color-bad-700: #991b1b;
+  --color-warn-50: #fff7ed;
+  --color-warn-600: #c2580c;
+
+  --shadow-card: 0 1px 2px rgb(27 31 43 / 0.04), 0 4px 16px -4px rgb(27 31 43 / 0.08);
+  --shadow-pop: 0 12px 32px -8px rgb(18 35 84 / 0.25);
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background: var(--color-paper);
   color: var(--color-ink);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+}
+
+::selection {
+  background: var(--color-gold-100);
+}
+
+/* Bosma: navigatsiya va tugmalar chiqmaydi. */
+@media print {
+  body {
+    background: #fff;
+  }
+  .no-print {
+    display: none !important;
+  }
 }
